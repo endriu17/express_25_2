@@ -1,3 +1,3 @@
 # ExpressJS
 
-## CRUD operations on a JSON file
+## Middleware - intermediary between request and response
