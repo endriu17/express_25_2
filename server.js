@@ -1,22 +1,24 @@
 var express = require('express');
 var app = express();
 
-app.use(express.static('assets'));
-app.get('/', function (req, res) {
-    res.sendFile('/index.html')
-});
+app.set('view engine', 'pug');
+app.set('views','./views');
 
-app.get('/userform', function (req, res) {
-    const response = {
-        first_name: req.query.first_name,
-        last_name: req.query.last_name
-    };
-    res.end(JSON.stringify(response));
-});
+app.get('/login-template', function(req, res) {
+  res.render('login-template', {
+      name: "Website for login using Google",
+      url: "/auth/google"
+  });
+})
+app.get('/auth/google', function(req, res) {
+  res.send("Congratulations! You are logged in!");
+  console.log('Login completed successfully!');
+})
 
-var server = app.listen(3000, 'localhost', function() {
-    var host = server.address().address;
-    var port = server.address().port;
+app.use(express.static(__dirname + '/public'));
 
-    console.log('Przykładowa aplikacja nasłuchuje na http://' + host + ':' + port);
-});
+app.listen(3000);
+app.use(function (req, res, next){
+  res.status(404).send("We're sorry, but we couldn't find your request.")
+  next();
+})
